@@ -1,2 +1,2 @@
-web_directory: /opt/infostor/www
-data_directory: /opt/infostor/data
+web_directory: ./infoset/web
+data_directory: ./infoset/web
