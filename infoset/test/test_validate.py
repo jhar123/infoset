@@ -243,9 +243,9 @@ class TestValidateCache(unittest.TestCase):
                                         [3, 1327.253360, 'FastEthernet0/23'],
                                         [4, 24709.68928, 'FastEthernet0/26'],
                                         [5, 779369.064, 'FastEthernet0/3'],
-                                        [6, 3581965.08, 'FastEthernet0/35'],
+                                        [6, 3581965608, 'FastEthernet0/35'],
                                         [7, 0, 'Null0'],
-                                        [8, 16823572.0, 'Vlan1']],
+                                        [8, 168235.240, 'Vlan1']],
                                'description': None}},
              'hostname': '192.168.1.3',
              'timestamp': 1468857600,
@@ -446,53 +446,54 @@ bafc92b016597fb56ec51e57668')
     def test_check_data_types(self):
         """Test for correct and complete information in data types."""
         # Shorten the name of the chartable key found in dictionary
-        data_groupin = self.config_good['chartable'][
+        data_groupin = self.config_notcor_data_dict['chartable'][
             '_ifInOctets']['data']
-        data_groupout = self.config_good['chartable'][
+        data_groupout = self.config_notcor_data_dict['chartable'][
             '_ifOutOctets']['data']
         data_in = '_ifInOctets'
         data_out = '_ifOutOctets'
         # define names for section in 'data'
-        for data_in in self.config_good['chartable'].keys():
+        for data_in in self.config_notcor_data_dict['chartable'].keys():
             for datapoint in data_groupin:
                 index = datapoint[0]
                 value = datapoint[1]
                 source = datapoint[2]
 
-        for data_out in self.config_good['chartable'].keys():
+        for data_out in self.config_notcor_data_dict['chartable'].keys():
             for datapoint in data_groupout:
                 index = datapoint[0]
                 value = datapoint[1]
                 source = datapoint[2]
 
-        data_float = _filename(
-            self.config_good_dict['timestamp'],
-            self.config_good_dict['uid'])
-        # Get and write to no_chartable_path
-        data_float_path = path.join(self.validate_dir, data_float)
-        with open(data_float_path, 'w') as validate:
-            json.dump(self.config_good_dict, validate)
-
-        # testobj = test_class.ValidateCache(filepath=notcor_data_path)
-        # result = testobj(value)
-        self.assertIsInstance(value, float)
-        # self.assertEqual(result, False)
-        # print(result)
-
         # Return False if chartable is not found in file
         no_data = _filename(
-            self.config_good_dict['timestamp'],
-            self.config_good_dict['uid'])
+            self.config_notcor_data_dict['timestamp'],
+            self.config_notcor_data_dict['uid'])
         # Get and write to no_chartable_path
         no_data_path = path.join(self.validate_dir, no_data)
         with open(no_data_path, 'w') as validate:
-            json.dump(self.config_good_dict, validate)
+            json.dump(self.config_notcor_data_dict, validate)
 
-        self.assertEqual(len(datapoint), 3)
+        result = (len(datapoint) == 3)
+        self.assertEqual(result, True)
         # testobj = test_class.ValidateCache(filepath=no_data_path)
         # result = testobj.valid()
         # self.assertEqual(result, True)
-        # print(result)
+        print(result)
+
+        data_float = _filename(
+            self.config_notcor_data_dict['timestamp'],
+            self.config_notcor_data_dict['uid'])
+        # Get and write to no_chartable_path
+        data_float_path = path.join(self.validate_dir, data_float)
+        with open(data_float_path, 'w') as validate:
+            json.dump(self.config_notcor_data_dict, validate)
+
+        # testobj = test_class.ValidateCache(filepath=data_float_path)
+        # result = testobj(value)
+        result = self.assertEqual(value, float)
+        self.assertEqual(result, False)
+        print(result)
 
 
 def _filename(timestamp, uid):
