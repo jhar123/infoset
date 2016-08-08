@@ -253,38 +253,6 @@ class TestValidateCache(unittest.TestCase):
 016597fb56ec51e57668'}
             """)
 
-        cls.config_source = (
-            """
-            {'agent': 'interfaces',
-             'chartable': {'_ifInOctets': {'base_type': 'counter32',
-                               'data': [[0, 19729125944, 'FastEthernet0/1'],
-                                        [1, 30281712128, 'FastEthernet0/2'],
-                                        [2, 3602957760, 'FastEthernet0/21'],
-                                        [3, 19677028080, 'FastEthernet0/23'],
-                                        [4, 18527568600, 'FastEthernet0/26'],
-                                        [5, 13548541568, 'FastEthernet0/3'],
-                                        [6, 1633419768, 'FastEthernet0/35'],
-                                        [7, 0, 'Null0'],
-                                        [8, 1657831376, 'Vlan1']],
-                               'description': None},
-                           '_ifOutOctets': {'base_type': 'counter32',
-                               'data': [[0, 31348133488, 'FastEthernet0/1'],
-                                        [1, 5327628464, 'FastEthernet0/2'],
-                                        [2, 10968459144, 'FastEthernet0/21'],
-                                        [3, 13275253360, 'FastEthernet0/23'],
-                                        [4, 24709868928, 'FastEthernet0/26'],
-                                        [5, 7793695064, 'FastEthernet0/3'],
-                                        [6, 3581965608, 'FastEthernet0/35'],
-                                        [7, 0, 'Null0'],
-                                        [8, 1682357240, 'Vlan1']],
-                               'description': None}},
-             'hostname': '192.168.1.3',
-             'timestamp': 1468857600,
-             'uid': 'e92af7f044246b7976c1f3274b8f6228ea999bafc92b\
-016597fb56ec51e57668'}
-            """)
-
-        # Change strings to dicttionaries
         # Complete file name
         cls.config_good_dict = ast.literal_eval(cls.config_good.strip())
 
@@ -302,7 +270,6 @@ class TestValidateCache(unittest.TestCase):
         cls.config_no_uid_dict = ast.literal_eval(cls.config_no_uid.strip())
         cls.config_notcor_data_dict = ast.literal_eval(
             cls.config_notcor_data.strip())
-        cls.config_source_dict = ast.literal_eval(cls.config_source.strip())
 
         # Create temporary configuration file
         cls.validate_dir = tempfile.mkdtemp()
@@ -491,7 +458,8 @@ bafc92b016597fb56ec51e57668')
 
         # testobj = test_class.ValidateCache(filepath=data_float_path)
         # result = testobj(value)
-        result = self.assertEqual((value == int), True)
+        result = (value == float)
+        self.assertEqual(result, False)
         # self.assertEqual(result, False)
         print(result)
 
